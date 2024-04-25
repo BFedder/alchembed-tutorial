@@ -1,6 +1,6 @@
 [ moleculetype ]
 ; Name            nrexcl
-Protein  	   		3
+PROTEIN  	   		3
 
 [ atoms ]
 ;   nr       type  resnr residue  atom   cgnr     charge       mass  typeB    chargeB      massB

@@ -1,10 +1,11 @@
 #! /bin/bash
 
-# if necessary, put the required GROMACS version in your $PATH. Check via
-#  > grompp --version
+# Make sure the gromacs binaries `gmx` and `gmx_d` are in your $PATH. Check via
+# $ gmx -h
+# and
+# $ gmx_d -h
 # you may only have one version on your machine, or you may use a modules environment
-
-source /usr/local/gromacs/5.0.4/bin/GMXRC
+# Source the required GMXRC files where necessary.
 
 # this script takes two arguments
 # the first is the name of the protein (from pla2, nbar, cox1, kcsa, ompf)
@@ -23,7 +24,7 @@ if [ ! -d "$protein/$ff" ]; then
 fi
 
 # First, prepare a TPR file for energy minimisation
-grompp 	 -f common-files/em-$ff.mdp\
+gmx grompp 	 -f common-files/em-$ff.mdp\
 		 -c common-files/$protein-$ff.pdb\
 		 -p common-files/$protein-$ff.top\
 		 -n common-files/$protein-$ff.ndx\
@@ -34,13 +35,14 @@ grompp 	 -f common-files/em-$ff.mdp\
 # ..now run using double precision (you may need to compile this as only single precision is compiled by default)
 #  (or just try single precision...)
 # This should only take a few seconds
-mdrun_d  -deffnm $protein/$ff/$protein-$ff-em\
+gmx_d mdrun -v -deffnm $protein/$ff/$protein-$ff-em\
 		 -ntmpi 1
 
 
 # Now, prepare the ALCHEMBED TPR file
-grompp 	 -f common-files/alchembed-$ff.mdp\
+gmx grompp 	 -f common-files/alchembed-$ff.mdp\
 		 -c $protein/$ff/$protein-$ff-em.gro\
+		 -r $protein/$ff/$protein-$ff-em.gro\
 		 -p common-files/$protein-$ff.top\
 		 -n common-files/$protein-$ff.ndx\
 	     -po $protein/$ff/$protein-$ff-alchembed.mdp\
@@ -48,5 +50,5 @@ grompp 	 -f common-files/alchembed-$ff.mdp\
          -maxwarn 2
 
 # ..and run on a single core. 
-mdrun    -deffnm $protein/$ff/$protein-$ff-alchembed\
-	     -ntmpi 1
+gmx mdrun -v -deffnm $protein/$ff/$protein-$ff-alchembed\
+	     -ntmpi 1 -ntomp 1

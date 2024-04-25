@@ -39,3 +39,4 @@ sc-r-power           = 6
 couple-moltype       = PROTEIN
 couple-lambda0       = none
 couple-lambda1       = vdw
+couple-intramol      = yes

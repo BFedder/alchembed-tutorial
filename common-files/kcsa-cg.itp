@@ -8,7 +8,7 @@
 
 [ moleculetype ]
 ; Name         Exclusions
-Protein         1
+PROTEIN         1
 
 [ atoms ]
     1    P5     1   LEU    BB     1  0.0000 ; C
