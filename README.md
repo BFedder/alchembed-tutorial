@@ -64,9 +64,9 @@ The second step is a short 1000 step [GROMACS](http://www.gromacs.org) MD simula
     
 The strength of the (soft-core) van der Waals interaction between the protein and the rest of the system is described by a coupling parameter, lambda. Initially, lambda is zero and there are no forces between the protein and the rest of the system. Here lambda increases by 0.001 for 1000 steps, thereby smoothly "turning on" the interactions between the protein and the rest of the system. During this process the position of the protein beads (or atoms) are restrained and as lambda increases the lipid beads (or atoms) move out of the space occupied by the protein.
 
-The `try-alchembed.sh` script takes two arguments (the script is commented also if you'd like to look inside). The name of the protein (taken from the list above) and the forcefield. Hence to run it type
+The `try-alchembed.sh` script takes three arguments (the script is commented also if you'd like to look inside). The name of the protein (taken from the list above) and the forcefield, and the number of OpenMP threads to use (optional, defaults to 1. More is faster, but too many can break the simulation). Hence to run it type, e.g.
 
-    ./try-alchembed.sh nbar cg
+    ./try-alchembed.sh nbar cg 6
 
 and assuming you have [GROMACS](http://www.gromacs.org) in your `$PATH` etc, then it should perform the short energy minimisation and then the embedding simulation. On a single core of at Intel Xeon E5 processor (c. 2014) this took 13 seconds. The larger proteins and the atomistic cases will take longer (nbar at took around 15 min on the same processor).
 

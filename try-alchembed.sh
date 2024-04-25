@@ -14,6 +14,10 @@ protein=$1
 # the second is whether it is atomistic (at) or coarse-grained (cg)
 ff=$2
 
+# the third (optional) parameter controls the number of OpenMP threads for the
+# alchembed run. Defaults to 1. More is faster, but too many can break the simulation.
+ntomp=${3:-1}
+
 # create the output directory if it doesn't exist (e.g. nbar/cg/)
 if [ ! -d "$protein" ]; then
 	mkdir $protein
@@ -51,4 +55,4 @@ gmx grompp 	 -f common-files/alchembed-$ff.mdp\
 
 # ..and run on a single core. 
 gmx mdrun -v -deffnm $protein/$ff/$protein-$ff-alchembed\
-	     -ntmpi 1 -ntomp 1
+	     -ntmpi 1 -ntomp $ntomp
